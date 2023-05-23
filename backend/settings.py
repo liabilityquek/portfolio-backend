@@ -130,8 +130,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 DATABASES = {
-    'default': dj_database_url.parse(str(os.environ.get('DATABASE_URL')), conn_max_age=600),
+    'default': dj_database_url.parse(str(os.environ.get('DATABASE_URL', 'postgres://postgres:123@localhost:5432/portfolio')), conn_max_age=600),
 }
+
 
 # print(type(os.environ.get('DATABASE_URL')))
 
