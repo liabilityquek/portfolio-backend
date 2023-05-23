@@ -225,4 +225,4 @@ EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
 
 AUTH_USER_MODEL = 'user.UserData'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
