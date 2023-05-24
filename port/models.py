@@ -8,4 +8,4 @@ class Portfolio(models.Model):
     project_tech_stack = models.CharField(max_length=500, blank=True, null=True)
     project_description = models.CharField(max_length=1000, blank=True, null=True)
     project_created_at = models.DateTimeField(auto_now_add=True, null=True)
-    project_updated_at = models.DateTimeField(auto_now=True)
+    project_updated_at = models.DateTimeField(auto_now=True, null=True)
