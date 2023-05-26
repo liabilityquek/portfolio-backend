@@ -1,70 +1,9 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Contact, SocialMediaLinks
-from .serializers import ContactSerializer, SocialMediaLinksSerializer
+from .models import SocialMediaLinks
+from .serializers import SocialMediaLinksSerializer
 from user.authenticate import CustomAuthentication
-
-class ContactView(APIView):
-    def get(self, request):
-        contact = Contact.objects.all()
-        serializer = ContactSerializer(contact, many=True)
-        return Response(serializer.data)
-    
-
-
-class ContactDetailView(APIView):
-    authentication_classes = [CustomAuthentication]
-    
-    def put(self, request, id):
-        if request.user and request.user.is_authenticated:  # check if user is authenticated
-            try:
-                contact = Contact.objects.get(id=id)
-            except contact.DoesNotExist:
-                return Response({"detail": f"contact {id} does not exist"}, status=status.HTTP_404_NOT_FOUND)
-            
-            serializer = ContactSerializer(contact,data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({"detail": "Unable to amend Contact due to denied access"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-    def delete(self, request, id):
-        if request.user and request.user.is_authenticated:  # check if user is authenticated
-            try:
-                contact = Contact.objects.get(id=id)
-                contact.delete()
-            except Contact.DoesNotExist:
-                return Response({"detail": f"contact {id} does not exist"}, status=status.HTTP_404_NOT_FOUND)
-            return Response({"detail": "contact deleted successfully"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"Unable to delete contact due to denied access"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-    def get(self, request, id):
-        if request.user and request.user.is_authenticated:  # check if user is authenticated
-            try:
-                contact = Contact.objects.get(id=id)
-            except Contact.DoesNotExist:
-                return Response({"detail": f"contact {id} does not exist"}, status=status.HTTP_404_NOT_FOUND)
-            
-            serializer = ContactSerializer(contact)
-            return Response(serializer.data)
-        
-        else:
-            return Response({"detail": "Unable to retrieve Contact due to denied access"}, status=status.HTTP_401_UNAUTHORIZED)
-
-        
-    def post(self, request):
-        if request.user and request.user.is_authenticated:  # check if user is authenticated
-            serializer = ContactSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({"Unable to create Contact due to denied access"}, status=status.HTTP_401_UNAUTHORIZED)    
         
 class SocialMediaLinksView(APIView):
     def get(self, request):
