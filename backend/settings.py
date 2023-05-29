@@ -225,6 +225,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.UserData'
 
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
 STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
