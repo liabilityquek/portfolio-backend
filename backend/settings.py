@@ -39,7 +39,7 @@ DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 # Needed for production. Avoid using '*'.
 # amend when in production
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['portfolio-backend-k8gu.onrender.com', '*']
+ALLOWED_HOSTS = ['https://portfolio-backend-k8gu.onrender.com/']
 
 
 # Application definition
