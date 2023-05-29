@@ -39,7 +39,7 @@ DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 # Needed for production. Avoid using '*'.
 # amend when in production
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['portfolio-frontend-omega-rose.vercel.app']
+ALLOWED_HOSTS = ['https://portfolio-frontend-omega-rose.vercel.app']
 
 
 # Application definition
