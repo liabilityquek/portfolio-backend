@@ -39,7 +39,7 @@ DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 # Needed for production. Avoid using '*'.
 # amend when in production
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['portfolio-frontend-omega-rose.vercel.app']
 
 
 # Application definition
@@ -51,14 +51,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend',
+    'Portfolio',
     'port',
     'contact',
     'rest_framework',
     'user',
     'rest_framework_simplejwt',
     'aboutme',
+    'social_django',
 ]
+
 
 # set to True when deployment
 CSRF_COOKIE_SECURE = True 
@@ -82,6 +84,11 @@ REST_FRAMEWORK = {
       'user.authenticate.CustomAuthentication',
   ),
 }
+
+AUTHENTICATION_BACKENDS = (
+    # 'django.contrib.auth.backends.RemoteUserBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -119,16 +126,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': "django.db.backends.postgresql",
-#         'NAME': 'portfolio',
-#         'USER': 'postgres',
-#         'PASSWORD': '123',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
 DATABASES = {
     'default': dj_database_url.parse(str(os.environ.get('DATABASE_URL')), conn_max_age=600),
 }
@@ -174,50 +171,53 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SIMPLE_JWT = {
-  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-  'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-  'ROTATE_REFRESH_TOKENS': False,
-  'BLACKLIST_AFTER_ROTATION': True,
-  'UPDATE_LAST_LOGIN': False,
+# SIMPLE_JWT = {
+#   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+#   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#   'ROTATE_REFRESH_TOKENS': False,
+#   'BLACKLIST_AFTER_ROTATION': True,
+#   'UPDATE_LAST_LOGIN': False,
 
-  'ALGORITHM': 'HS256',
-  'SIGNING_KEY': SECRET_KEY,
-  'VERIFYING_KEY': None,
-  'AUDIENCE': None,
-  'ISSUER': None,
+#   'ALGORITHM': 'HS256',
+#   'SIGNING_KEY': SECRET_KEY,
+#   'VERIFYING_KEY': None,
+#   'AUDIENCE': None,
+#   'ISSUER': None,
 
-  'AUTH_HEADER_TYPES': ('Bearer',),
-  'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-  'USER_ID_FIELD': 'id',
-  'USER_ID_CLAIM': 'user_id',
-  'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+#   'AUTH_HEADER_TYPES': ('Bearer',),
+#   'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+#   'USER_ID_FIELD': 'id',
+#   'USER_ID_CLAIM': 'user_id',
+#   'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
 
-  'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-  'TOKEN_TYPE_CLAIM': 'token_type',
+#   'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+#   'TOKEN_TYPE_CLAIM': 'token_type',
 
-  'JTI_CLAIM': 'jti',
+#   'JTI_CLAIM': 'jti',
 
-  'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-  'SLIDING_TOKEN_LIFETIME': timedelta(minutes=30),
-  'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+#   'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+#   'SLIDING_TOKEN_LIFETIME': timedelta(minutes=30),
+#   'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 
-  # custom
-  'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
-  'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
-  'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
-  'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
-  'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
-  'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
-}
+#   # custom
+#   'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
+#   'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
+#   'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
+#   'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
+#   'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
+#   'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
+# }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = str(os.getenv('EMAIL_USER'))
-EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = str(os.getenv('EMAIL_USER'))
+# EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
 
 AUTH_USER_MODEL = 'user.UserData'
 
-STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')

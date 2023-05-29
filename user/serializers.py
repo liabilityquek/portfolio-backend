@@ -12,12 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = UserData.objects.create(email=validated_data['email'],
                                        name=validated_data['name']
                                          )
-        user.set_password(validated_data['password'])
         user.save()
         return user
-    
-    def validate_password(self, value):
-        if len(value) < 3:
-            raise serializers.ValidationError("Minimum password length should be at least 3 characters")
-        return value
+
     
